@@ -1,2 +1,3 @@
-# cs50w-project1
-project1 webx50 Nicaragua
+# Project 1
+
+Web Programming with Python and JavaScript
