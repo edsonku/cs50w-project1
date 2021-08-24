@@ -19,8 +19,7 @@ Session(app)
 # Set up database
 engine = create_engine("postgresql://kzpvqapggnigwp:fb9ae8eeee9d58ac9fa2ec10ad9f9ff7587a0505dc26de048128c2aee5de47fa@ec2-54-159-35-35.compute-1.amazonaws.com:5432/dfk5gp8sokvmov")
 db = scoped_session(sessionmaker(bind=engine))
+library = open("books.csv")
 
-
-@app.route("/")
-def index():
-    return "Project 1: TODO"
+for isbn, title, author, year in library:
+    print(f"{isbn} to {title} by {author} in {year}")
