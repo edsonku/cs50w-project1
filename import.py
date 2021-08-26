@@ -29,8 +29,6 @@ def main():
     for isbn, title, author, year in reader:
         db.execute("INSERT INTO library (isbn, title, author, year) VALUES (:isbn, :title, :author, :year)",
                    {"isbn": isbn, "title": title, "author": author, "year": year})
-        print(
-            f"Añadido a la biblioteca {title} de {author} escrito en el año {year}")
 
     db.commit()
 
