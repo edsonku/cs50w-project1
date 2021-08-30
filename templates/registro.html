@@ -7,6 +7,9 @@
     <title>Registro</title>
 </head>
 <body>
+    % for mesg in get_flashed_message()%}
+    <h1>{{mesg}}</h1>
+    {%endfor%}
     <section class="row justify-content-center">
         <article class="col-lg-6 col-12">
             <form action="/registro" method="post">

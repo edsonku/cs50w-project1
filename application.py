@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, session, url_for, flash
+from flask import Flask, render_template, request, session, url_for, flash, redirect
 from flask.helpers import flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -8,6 +8,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
+#from datatime 
 
 app = Flask(__name__)
 
@@ -39,11 +40,11 @@ def registro():
         confirmacion = request.form.get("confirmation")
         if not request.form.get("username"):
             print("Obligatorio poner usuario")
-            return render_template("registro.html")
+            return redirect("registro.html")
 
         elif not request.form.get("password"):
             print("obligatorio poner contraseña")
-            return render_template("registro.html")
+            return redirect("registro.html")
 
         elif request.form.get("password") != confirmacion:
             print("las contraseñas deben ser las mismas")
@@ -51,9 +52,9 @@ def registro():
         
         usuario_existente = db.execute("SELECT nombre from usuarios where nombre =:username", {"username": nombre})
         #print(usuario_existente)
-        if  not usuario_existente:
+        if usuario_existente is not None:
             print("intenta otro nombre")
-            flash(u'Invalid password provided', 'error')
+            flash(u'Intenta otro nombre', 'error')
             return render_template("registro.html")
         else:
             usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
