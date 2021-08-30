@@ -1,7 +1,7 @@
 import os
 
-from flask import Flask, render_template, request, session, url_for
-from flask_session import Session
+from flask import Flask, render_template, request, session, url_for, flash
+from flask.helpers import flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_session import Session
@@ -28,84 +28,71 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-
-
     return render_template("index.html")
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    """Log user in"""
-    # Forget any user_id
-    session.clear()
-
-    # User reached route via POST (as by submitting a form via POST)
+@app.route("/registro",methods=["GET", "POST"])
+def registro():
     if request.method == "POST":
 
-        # Ensure username was submitted
+        nombre = request.form.get("username")
+        contraseña = generate_password_hash(request.form.get("password"))
+        confirmacion = request.form.get("confirmation")
         if not request.form.get("username"):
-            return ("must provide username")
+            print("Obligatorio poner usuario")
+            return render_template("registro.html")
 
-        # Ensure password was submitted
         elif not request.form.get("password"):
-            return ("must provide password")
+            print("obligatorio poner contraseña")
+            return render_template("registro.html")
 
-        # Query database for username
-        rows = db.execute("SELECT * FROM usuarios WHERE Nombre = :username",
-                          username=request.form.get("username"))
-
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return ("invalid username and/or password")
-
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
-
-        # Redirect user to home page
-        return render_template("/")
-
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("login.html")
- 
- @app.route("/registro", methods=["GET", "POST"])
- def registro:
-     if request.method == "POST":
-            # asegurar envio de usrname
-        # Parte tomada del codigo usado en la clase 28
-        if not request.form.get("username"):
-            return apology("Ingrese un usuario", 400)
-
-        # asegurar envio de pswd
-        elif not request.form.get("password"):
-            
-
-        # verificar si contraseña es la misma
-        elif request.form.get("password") != request.form.get("confirmation"):
-
-        # Verifica si el usuario ya existe
-        usuario_existente = db.execute("SELECT * from users where username =:username", username=request.form.get("username"))
-
+        elif request.form.get("password") != confirmacion:
+            print("las contraseñas deben ser las mismas")
+            return render_template("registro.html")
+        
+        usuario_existente = db.execute("SELECT * from usuarios where nombre =:username", {"username": nombre})
+        #print(usuario_existente)
         if usuario_existente:
-           
-
+            print("intenta otro nombre")
+            flash(u'Invalid password provided', 'error')
+            return render_template("registro.html")
         else:
-            usuario_nuevo = db.execute("INSERT INTO users (username, hash) \
-                                       VALUES (:username, :password)",
-                                       username=request.form.get("username"), password=generate_password_hash(request.form.get("password")))
-
-            session["user_id"] = usuario_nuevo
-            flash("registrado")
+            usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
+                                       VALUES (:username, :password)",{"username":nombre, "password":contraseña})
+            
+            # session["usuarios_id"] = usuario_nuevo
+            # print(session["usuarios_id"])
+            db.commit() 
+                            
             return render_template("index.html")
-
     else:
-        return render_template("register.html")
+        return render_template("registro.html")
+
+@app.route("/login.html",methods=["GET","POST"])
+def login():
+    session.clear()
+    nombre = request.form.get("username")
+    contraseña = generate_password_hash(request.form.get("password"))
+    if request.method == "POST":
+        if not request.form.get("username"):
+            return render_template ("login.html")
+
+        elif not request.form.get("password"):
+            return render_template ("login.html")
+
+        busqueda = db.execute("SELECT * FROM users WHERE usuarios = :username",
+                          {"username":nombre})
+
+        if len(busqueda) != 1 or not check_password_hash(busqueda[0]["hash"], request.form.get("password")):
+            print("invalida contraseña")
+            return render_template ("login.html")
+
+        session["usuarios_id"] = busqueda[0]["id"]
+
+        return render_template("index.html")
+    else:
+        return render_template ("login.html")
+
 @app.route("/logout")
 def logout():
-    """Log user out"""
-
-    # Forget any user_id
     session.clear()
-
-    # Redirect user to login form
     return render_template("/")
-
