@@ -49,9 +49,9 @@ def registro():
             print("las contraseñas deben ser las mismas")
             return render_template("registro.html")
         
-        usuario_existente = db.execute("SELECT * from usuarios where nombre =:username", {"username": nombre})
+        usuario_existente = db.execute("SELECT nombre from usuarios where nombre =:username", {"username": nombre})
         #print(usuario_existente)
-        if usuario_existente:
+        if  not usuario_existente:
             print("intenta otro nombre")
             flash(u'Invalid password provided', 'error')
             return render_template("registro.html")
@@ -59,8 +59,9 @@ def registro():
             usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
                                        VALUES (:username, :password)",{"username":nombre, "password":contraseña})
             
-            # session["usuarios_id"] = usuario_nuevo
+            #session["usuarios_id"] = usuario_nuevo[0]["id"]
             # print(session["usuarios_id"])
+            print("registrado")
             db.commit() 
                             
             return render_template("index.html")
@@ -82,7 +83,7 @@ def login():
         busqueda = db.execute("SELECT * FROM users WHERE usuarios = :username",
                           {"username":nombre})
 
-        if len(busqueda) != 1 or not check_password_hash(busqueda[0]["hash"], request.form.get("password")):
+        if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
             return render_template ("login.html")
 
