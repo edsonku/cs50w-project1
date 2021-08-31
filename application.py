@@ -36,6 +36,7 @@ def registro():
     if request.method == "POST":
 
         nombre = request.form.get("username")
+        print(nombre)
         contraseña = generate_password_hash(request.form.get("password"))
         confirmacion = request.form.get("confirmation")
         if not request.form.get("username"):
@@ -50,31 +51,52 @@ def registro():
             print("las contraseñas deben ser las mismas")
             return render_template("registro.html")
         
-        usuario_existente = db.execute("SELECT nombre from usuarios where nombre =:username", {"username": nombre})
+        usuario_existente = db.execute("SELECT * from usuarios where nombre =:username", {"username": nombre})
         #print(usuario_existente)
-        if usuario_existente is not None:
-            print("intenta otro nombre")
-            flash(u'Intenta otro nombre', 'error')
-            return render_template("registro.html")
-        else:
+        print(usuario_existente)
+        if not usuario_existente == True:
+            print("entro 1")
             usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
                                        VALUES (:username, :password)",{"username":nombre, "password":contraseña})
-            
-            #session["usuarios_id"] = usuario_nuevo[0]["id"]
-            # print(session["usuarios_id"])
             print("registrado")
+            print(usuario_nuevo)
             db.commit() 
+            return redirect(url_for("index"))
+        else:
+            print("intenta otro nombre")
+            flash(u'Intenta otro nombre')
+            return render_template("registro.html")
+        # if usuario_existente == None:
+        #     print("entro 2")
+        #     usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
+        #                                VALUES (:username, :password)",{"username":nombre, "password":contraseña})
+        #     print("registrado")
+        #     db.commit() 
+        #     return redirect(url_for("index"))
+        
+        # if usuario_existente is False:
+        #     print("entro 3")
+        #     usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
+        #                                VALUES (:username, :password)",{"username":nombre, "password":contraseña})
+        #     print("registrado")
+        #     db.commit() 
+        #     return redirect(url_for("index"))
+        
+ 
+        
+ 
                             
-            return render_template("index.html")
+            
     else:
         return render_template("registro.html")
 
 @app.route("/login.html",methods=["GET","POST"])
 def login():
     session.clear()
-    nombre = request.form.get("username")
-    contraseña = generate_password_hash(request.form.get("password"))
     if request.method == "POST":
+        nombre = request.form.get("username")
+        contraseña = generate_password_hash(request.form.get("password"))
+     
         if not request.form.get("username"):
             return render_template ("login.html")
 
@@ -82,17 +104,17 @@ def login():
             return render_template ("login.html")
 
         busqueda = db.execute("SELECT * FROM users WHERE usuarios = :username",
-                          {"username":nombre})
+                            {"username":nombre})
 
         if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
-            return render_template ("login.html")
+            return render_template("login.html")
 
         session["usuarios_id"] = busqueda[0]["id"]
 
-        return render_template("index.html")
+        return redirect("/")
     else:
-        return render_template ("login.html")
+        return render_template("login.html")
 
 @app.route("/logout")
 def logout():

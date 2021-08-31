@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
 </head>
+
 <body>
-    % for mesg in get_flashed_message()%}
-    <h1>{{mesg}}</h1>
-    {%endfor%}
+    <h1></h1>
     <section class="row justify-content-center">
         <article class="col-lg-6 col-12">
             <form action="/registro" method="post">
                 <div class="form-group">
-                    <input autocomplete="off" autofocus="" class="form-control" name="username" placeholder="Username" type="text">
+                    <input autocomplete="off" autofocus="" class="form-control" name="username" placeholder="Username"
+                        type="text">
                 </div>
                 <div class="form-group">
                     <input class="form-control" name="password" placeholder="Password" type="password">
@@ -26,5 +27,13 @@
             </form>
         </article>
     </section>
+    {% if get_flashed_messages() %}
+    <header>
+        <div class="alert alert-primary border text-center" role="alert">
+            {{ get_flashed_messages() | join(" ") }}
+        </div>
+    </header>
+    {% endif %}
 </body>
+
 </html>
