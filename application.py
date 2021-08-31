@@ -90,20 +90,22 @@ def registro():
     else:
         return render_template("registro.html")
 
-@app.route("/login.html",methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     session.clear()
     if request.method == "POST":
-        nombre = request.form.get("username")
-        contraseña = generate_password_hash(request.form.get("password"))
-     
+        
         if not request.form.get("username"):
             return render_template ("login.html")
 
         elif not request.form.get("password"):
             return render_template ("login.html")
 
-        busqueda = db.execute("SELECT * FROM users WHERE usuarios = :username",
+        nombre = request.form.get("username")
+        contraseña = generate_password_hash(request.form.get("password"))
+        print(nombre,contraseña)
+        
+        busqueda = db.execute("SELECT * FROM usuarios WHERE nombre = :username",
                             {"username":nombre})
 
         if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
