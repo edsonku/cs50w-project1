@@ -94,7 +94,7 @@ def login():
         print(busqueda[0]["id_usuario"])
         if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
-            session["usuarios_id"] = busqueda[0]["id_usuario"]
+            session["user_id"] = busqueda[0]["id_usuario"]
             return render_template("login.html")
             
         return redirect("/")
