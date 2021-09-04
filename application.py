@@ -1,5 +1,5 @@
 import os
-
+from functools import wraps
 from flask import Flask, render_template, request, session, url_for, flash, redirect
 from flask.helpers import flash
 from sqlalchemy import create_engine
@@ -27,7 +27,16 @@ engine = create_engine(
     "postgresql://kzpvqapggnigwp:fb9ae8eeee9d58ac9fa2ec10ad9f9ff7587a0505dc26de048128c2aee5de47fa@ec2-54-159-35-35.compute-1.amazonaws.com:5432/dfk5gp8sokvmov")
 db = scoped_session(sessionmaker(bind=engine))
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route("/")
+@login_required
 def index():
     return render_template("index.html")
 
@@ -60,6 +69,7 @@ def registro():
             usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
                                        VALUES (:username, :password)",{"username":nombre, "password":contraseña})
             print("registrado")
+            session["user_id"] = usuario_nuevo[0]["id_usuario"]
             db.commit() 
             return redirect(url_for("index"))
         
@@ -94,9 +104,8 @@ def login():
         print(busqueda[0]["id_usuario"])
         if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
-            session["user_id"] = busqueda[0]["id_usuario"]
             return render_template("login.html")
-            
+        session["user_id"] = busqueda[0]["id_usuario"]
         return redirect("/")
     else:
         return render_template("login.html")
@@ -105,3 +114,8 @@ def login():
 def logout():
     session.clear()
     return render_template("/login.html")
+
+def reseñas():
+    #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "password":contraseña})
+    print("registrado")
+    db.commit() 
