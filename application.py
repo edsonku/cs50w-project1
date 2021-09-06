@@ -121,6 +121,7 @@ def logout():
     return render_template("/login.html")
 
 def reseñas():
+    user_id = session["user_id"]
     comentario =request.form.get("comentario")
     print(comentario)
     #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "password":contraseña})
