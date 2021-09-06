@@ -35,6 +35,10 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+@app.errorhandler(404)
+def page_no_found(e):
+    return render_template("error.html"),404
+
 @app.route("/")
 @login_required
 def index():
@@ -99,9 +103,10 @@ def login():
         busqueda = db.execute("SELECT * FROM usuarios WHERE nombre = :username",
                             {"username":nombre}).fetchall()
 
+        if not busqueda:
+            flash('usurio no registrado')
+            return redirect(url_for("login"))
         print(busqueda)
-        print(busqueda[0]["contraseña"])
-        print(busqueda[0]["id_usuario"])
         if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
             return render_template("login.html")
@@ -116,6 +121,8 @@ def logout():
     return render_template("/login.html")
 
 def reseñas():
+    comentario =request.form.get("comentario")
+    print(comentario)
     #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "password":contraseña})
-    print("registrado")
-    db.commit() 
+    #print("registrado")
+    #db.commit() 
