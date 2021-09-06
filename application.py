@@ -8,6 +8,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
+from helper import apigoogle, login_required
 #from datatime 
 
 app = Flask(__name__)
@@ -27,13 +28,7 @@ engine = create_engine(
     "postgresql://kzpvqapggnigwp:fb9ae8eeee9d58ac9fa2ec10ad9f9ff7587a0505dc26de048128c2aee5de47fa@ec2-54-159-35-35.compute-1.amazonaws.com:5432/dfk5gp8sokvmov")
 db = scoped_session(sessionmaker(bind=engine))
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
+
 
 @app.errorhandler(404)
 def page_no_found(e):
@@ -87,7 +82,6 @@ def registro():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    session.clear()
     if request.method == "POST":
         
         if not request.form.get("username"):
@@ -109,6 +103,7 @@ def login():
         print(busqueda)
         if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
+            flash('invalida')
             return render_template("login.html")
         session["user_id"] = busqueda[0]["id_usuario"]
         return redirect("/")
@@ -124,6 +119,18 @@ def reseñas():
     user_id = session["user_id"]
     comentario =request.form.get("comentario")
     print(comentario)
-    #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "password":contraseña})
+    #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":  ,"valoracion": })
     #print("registrado")
     #db.commit() 
+
+@app.route("/book/<string:isbn>")
+def libro(isbn):
+    info = apigoogle(isbn)
+
+    if info["totalItems"] == 0:
+        return "No"
+
+
+    return info
+
+

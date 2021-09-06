@@ -32,6 +32,7 @@
         {% endif %}
       </nav>
       {% if get_flashed_messages() %}
+      
       <header>
           <div class="alert alert-warning border text-center" role="alert">
               {{ get_flashed_messages() | join(" ") }}
