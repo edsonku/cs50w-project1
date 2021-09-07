@@ -12,18 +12,20 @@ def apigoogle(isbn):
         }
         return resp
     
-    volumeInfo= response["items"][0]["volumeInfo"]["averageRating"]
+    volumeInfo= response["items"][0]["volumeInfo"]
     img =response["items"][0]["volumeInfo"]["imageLinks"]
     print("---------------------------------")
     print(volumeInfo)
-    
+    print("---------------------------------")
+    print(volumeInfo["ratingsCount"])
+    print("---------------------------------")
     resp={
         "totalItems":1,
-        "averageRating":response["items"][0]["volumeInfo"]["averageRating"],
+        "averageRating":volumeInfo["averageRating"],
         "ratingsCount": volumeInfo["ratingsCount"],
         "img": img["thumbnail"]
     }
-    return volumeInfo
+    
     return resp
 
 def login_required(f):
