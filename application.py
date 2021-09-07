@@ -82,6 +82,7 @@ def registro():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    session.clear()
     if request.method == "POST":
         
         if not request.form.get("username"):
@@ -133,4 +134,6 @@ def libro(isbn):
 
     return info
 
-
+@app.route("/book")
+def book():
+    return render_template("book.html")
