@@ -16,7 +16,7 @@
         <a class="navbar-brand">Navbar</a>
         {% if session.user_id %}
         <form class="form-inline">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button id="botonbusqueda" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <ul class="navbar-nav justify-content-end">
@@ -33,11 +33,11 @@
       </nav>
       {% if get_flashed_messages() %}
       
-      <header>
+        <header>
           <div class="alert alert-warning border text-center" role="alert">
               {{ get_flashed_messages() | join(" ") }}
           </div>
-      </header>
+        </header>
       {% endif %}
       
       {% if session.user_id %}

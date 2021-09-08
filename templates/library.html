@@ -3,6 +3,17 @@
 {% block title %}index{% endblock %}
 {%block main%}
 <div class="container">
+    <div class="row">
+        {% for x in libro_existente%}
+        <div class="col-6">
+            <img src="" alt="">
+            <h1>{{x.title}}</h1>
+            <h2>{{x.author}}</h2>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-6 ">
             <h1>info del libro</h1>

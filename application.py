@@ -37,7 +37,10 @@ def page_no_found(e):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    libro_existente = db.execute("SELECT title,author from library").fetchall()
+    return render_template("index.html",libro_existente=libro_existente)
+    #  print(libro_existente)
+
 
 @app.route("/registro",methods=["GET", "POST"])
 def registro():
@@ -124,7 +127,7 @@ def reseñas():
     #print("registrado")
     #db.commit() 
 
-@app.route("/book/<string:isbn>")
+@app.route("/library/<string:isbn>")
 def libro(isbn):
     info = apigoogle(isbn)
 
@@ -134,6 +137,6 @@ def libro(isbn):
 
     return info
 
-@app.route("/book")
+@app.route("/library")
 def book():
-    return render_template("book.html")
+    return render_template("library.html")

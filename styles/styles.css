@@ -12,7 +12,10 @@
     display: flex;
     width: 100%;
     align-items: stretch;
-  }#sidebar {
+    height: 583px;
+  }
+  #sidebar {
+      
       min-width: 250px;
       max-width: 250px;
       background: #6a76f8;
