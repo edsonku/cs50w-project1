@@ -3,29 +3,21 @@
 {% block title %}index{% endblock %}
 {%block main%}
 <div class="container">
-    <div class="row">
-        {% for x in libro_existente%}
-        <div class="col-6">
-            <img src="" alt="">
-            <h1>{{x.title}}</h1>
-            <h2>{{x.author}}</h2>
+    <article class="row"></article>
+    {% for x in a%}
+        
+            <div class="col-6">
+                <header>
+                <h1><a href="/library/{{x.isbn}}">{{x.title}}</a></h2>
+                <h2>{{x.author}}</h2>
+                <img src="" alt="">
+            </header>
         </div>
-        {% endfor %}
-    </div>
+            
+        
+    {% endfor %}
+    </article>
 </div>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6 ">
-            <h1>info del libro</h1>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-6 ">
-            <textarea name="comentario" id="comentario" cols="30" rows="10" placeholder="Que opinas tu?"></textarea>
-        </div>
-    </div>
-
-</div>    
 
     
 {%endblock%}

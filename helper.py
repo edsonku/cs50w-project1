@@ -14,11 +14,11 @@ def apigoogle(isbn):
     
     volumeInfo= response["items"][0]["volumeInfo"]
     img =response["items"][0]["volumeInfo"]["imageLinks"]
-    print("---------------------------------")
+    print("--------------------------------- helper")
     print(volumeInfo)
-    print("---------------------------------")
+    print("---------------------------------helper")
     print(volumeInfo["ratingsCount"])
-    print("---------------------------------")
+    print("---------------------------------helper")
     resp={
         "totalItems":1,
         "averageRating":volumeInfo["averageRating"],

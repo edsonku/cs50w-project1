@@ -133,10 +133,17 @@ def libro(isbn):
 
     if info["totalItems"] == 0:
         return "No"
+    
+    print (info)
 
-
-    return info
+    return render_template("libro.html",info=info)
 
 @app.route("/library")
-def book():
-    return render_template("library.html")
+def library():
+    libro_existente=db.execute("SELECT * FROM library LIMIT 5").fetchall()
+    print(libro_existente)
+    for i in range (5):
+        print(libro_existente[i]["author"])
+        print(libro_existente[i]["title"])
+    a=libro_existente
+    return render_template("library.html",a=a)
