@@ -23,6 +23,9 @@ def apigoogle(isbn):
         "totalItems":1,
         "averageRating":volumeInfo["averageRating"],
         "ratingsCount": volumeInfo["ratingsCount"],
+        "description":volumeInfo["description"],
+        "title":volumeInfo["title"],
+        "author":volumeInfo["authors"],
         "img": img["thumbnail"]
     }
     

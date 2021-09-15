@@ -1,4 +1,4 @@
-.nav-item{
+/* .nav-item{
     justify-content: end;
     color: cornsilk;
 }
@@ -8,11 +8,10 @@
     border-color: #fff;
 }
 
-.wrapper {
+.wrapper{
     display: flex;
     width: 100%;
     align-items: stretch;
-    height: 583px;
   }
   #sidebar {
       
@@ -58,4 +57,4 @@
     min-height: 100vh;
     transition: all 0.3s;
     margin-top: 70px;
- }
+ } */

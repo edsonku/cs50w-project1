@@ -132,11 +132,14 @@ def libro(isbn):
     info = apigoogle(isbn)
 
     if info["totalItems"] == 0:
-        return "No"
+        return render_template("error.html"),404
     
     print (info)
+    print("----------------------imagen")
+    print(info["img"])
+    portada=info["img"]
 
-    return render_template("libro.html",info=info)
+    return render_template("libro.html",info=info,portada=portada)
 
 @app.route("/library")
 def library():
