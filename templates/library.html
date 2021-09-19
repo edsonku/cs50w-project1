@@ -3,11 +3,11 @@
 {% block title %}index{% endblock %}
 {%block main%}
 <div class="container">
-    <article class="row"></article>
-    {% for x in a%}
+    <article class="row">
+    {% for x in libro_existente%}
         
-            <div class="col-6">
-                <header>
+        <div class="col-6">
+            <header>
                 <h1><a href="/library/{{x.isbn}}">{{x.title}}</a></h2>
                 <h2>{{x.author}}</h2>
                 <img src="" alt="">

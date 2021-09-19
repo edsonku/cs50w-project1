@@ -1,5 +1,6 @@
 import os
 from functools import wraps
+from weakref import ProxyTypes
 from flask import Flask, render_template, request, session, url_for, flash, redirect
 from flask.helpers import flash
 from sqlalchemy import create_engine
@@ -9,6 +10,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 from helper import apigoogle, login_required
+#from googletrans import Traslator 
 #from datatime 
 
 app = Flask(__name__)
@@ -34,11 +36,29 @@ db = scoped_session(sessionmaker(bind=engine))
 def page_no_found(e):
     return render_template("error.html"),404
 
-@app.route("/")
+@app.route("/",methods=["GET", "POST"])
 @login_required
 def index():
-    libro_existente = db.execute("SELECT title,author from library").fetchall()
-    return render_template("index.html",libro_existente=libro_existente)
+    if request.method == "POST":
+        busqueda= request.form.get("busqueda")
+        print(busqueda)
+        print("success--------------")
+        busqueda=db.execute("SELECT * FROM library WHERE isbn =:isbn OR title=:title OR author=:author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
+        print(busqueda)
+
+        if not busqueda:
+            print("cero")
+            redirect("/")
+        return redirect('/')
+
+    else:
+        return render_template("index.html")
+        # libro_existente = db.execute("SELECT title,author FROM library WHERE ").fetchall()
+        # comentario=reseñas
+        # print(comentario)
+
+    
+    
     #  print(libro_existente)
 
 
@@ -98,19 +118,21 @@ def login():
         contraseña = generate_password_hash(request.form.get("password"))
         print(nombre,contraseña)
         
-        busqueda = db.execute("SELECT * FROM usuarios WHERE nombre = :username",
+        busqueda_user = db.execute("SELECT * FROM usuarios WHERE nombre = :username",
                             {"username":nombre}).fetchall()
 
-        if not busqueda:
+        if not busqueda_user:
             flash('usurio no registrado')
             return redirect(url_for("login"))
-        print(busqueda)
-        if len(busqueda) != 1 or not check_password_hash(busqueda[0]["contraseña"], request.form.get("password")):
+        print(busqueda_user)
+        if len(busqueda_user) != 1 or not check_password_hash(busqueda_user[0]["contraseña"], request.form.get("password")):
             print("invalida contraseña")
             flash('invalida')
             return render_template("login.html")
-        session["user_id"] = busqueda[0]["id_usuario"]
+
+        session["user_id"] = busqueda_user[0]["id_usuario"]
         return redirect("/")
+
     else:
         return render_template("login.html")
 
@@ -119,34 +141,62 @@ def logout():
     session.clear()
     return render_template("/login.html")
 
-def reseñas():
-    user_id = session["user_id"]
-    comentario =request.form.get("comentario")
-    print(comentario)
-    #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":  ,"valoracion": })
-    #print("registrado")
-    #db.commit() 
-
-@app.route("/library/<string:isbn>")
-def libro(isbn):
-    info = apigoogle(isbn)
-
-    if info["totalItems"] == 0:
-        return render_template("error.html"),404
+# def reseñas():
     
-    print (info)
-    print("----------------------imagen")
-    print(info["img"])
-    portada=info["img"]
+#         user_id = session["user_id"]
+#         comentario =request.form.get("comentario")
+#         print("----------------------------.comentario")
+#         print(comentario)
+#         print(user_id)
+#         #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":  ,"valoracion": })
+#         #print("registrado")
+#         #db.commit() 
+#         return comentario
+    
 
-    return render_template("libro.html",info=info,portada=portada)
+@app.route("/library/<string:isbn>", methods=["GET", "POST"])
+def libro(isbn):
+    if request.method == "POST":
+        user_id = session["user_id"]
+        comentario =request.form.get("comentario")
+        print("----------------------------.comentario")
+        print(comentario)
+        print(user_id)
+        #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":  ,"valoracion": })
+        #print("registrado")
+        #db.commit() 
+        return redirect(url_for("index"))
+
+    else:
+        info = apigoogle(isbn)
+        # si no existe el libro en la base de datos mandara un error
+        if info["totalItems"] == 0:
+            flash("Libro inexistente")
+            return render_template("error.html"),404
+
+        #traigo la imagen de la biblioteca para enviarsela al html
+        portada=info["img"]
+
+        return render_template("libro.html",info=info,portada=portada, isbn=isbn)
 
 @app.route("/library")
 def library():
-    libro_existente=db.execute("SELECT * FROM library LIMIT 5").fetchall()
-    print(libro_existente)
-    for i in range (5):
-        print(libro_existente[i]["author"])
-        print(libro_existente[i]["title"])
-    a=libro_existente
-    return render_template("library.html",a=a)
+    
+    libro_existente=db.execute("SELECT * FROM library LIMIT 10").fetchall()
+    libro_existente=libro_existente
+    return render_template("library.html",libro_existente=libro_existente)
+
+@app.route("/api/<string:isbn>")
+def api(isbn):
+    print(isbn)
+    busqueda=db.execute("SELECT * FROM library WHERE isbn =:isbn",{"isbn":isbn}).fetchall()
+    print(busqueda)
+    #resultado de la api
+    resapi={
+        "isbn":busqueda[0]["isbn"],
+        "author":busqueda[0]["author"],
+        "title":busqueda[0]["title"],
+        "year":busqueda[0]["year"]
+
+    }
+    return resapi
