@@ -1,3 +1,6 @@
+/* este es el bueno, el otro hay que eliminarlo XDxc */
+
+/* navbar */
 .nav-item{
     justify-content: end;
     color: cornsilk;
@@ -16,26 +19,26 @@
     padding: 8px;
 }
 
+/* pantalla */
 .wrapper {
     display: flex;
     width: 100%;
     align-items: stretch;
-  }#sidebar {
+  }
+  /* sidebar */
+#sidebar {
       min-width: 250px;
       max-width: 250px;
       background: #6a76f8;
       color: #fff;
       transition: all 0.3s;
   }
-  #sidebar.active{
-      margin-left: -250px;
-  }
   
-  #sidebar .sidebar-header{
+#sidebar .sidebar-header{
       padding: 20px;
       background: #6a76f8;
   }
-  #sidebar ul.components{
+#sidebar ul.components{
       padding: 20px 0px;
   }
   
@@ -57,6 +60,8 @@
       background: #fff;
       text-decoration: none;
   }
+
+  /* contenido */
  #contenido{
     width: 100%;
     padding: 40px;
@@ -64,6 +69,43 @@
     transition: all 0.3s;
     margin-top: 70px;
  }
+ /* valoracion */
+ #form {
+    width: 250px;
+    margin: 0 auto;
+    height: 50px;
+  }
+  
+  #form p {
+    text-align: center;
+  }
+  
+  #form label {
+    font-size: 20px;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  label {
+    color: grey;
+  }
+  
+  .clasificacion {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+  
+  label:hover,
+  label:hover ~ label {
+    color: orange;
+  }
+  
+  input[type="radio"]:checked ~ label {
+    color: orange;
+  }
+  /* footer */
  footer{
     background-color: grey;
     text-align: center;

@@ -1,5 +1,6 @@
 import os
 from functools import wraps
+from re import search
 from weakref import ProxyTypes
 from flask import Flask, render_template, request, session, url_for, flash, redirect
 from flask.helpers import flash
@@ -40,16 +41,20 @@ def page_no_found(e):
 @login_required
 def index():
     if request.method == "POST":
+
+        #ingreso y busqueda del libro por medio de isbn,author o titulo del libro
         busqueda= request.form.get("busqueda")
-        print(busqueda)
         print("success--------------")
         busqueda=db.execute("SELECT * FROM library WHERE isbn =:isbn OR title=:title OR author=:author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
-        print(busqueda)
-
+        
+        #si no hay resultado debera enviar un mensaje
         if not busqueda:
+            flash("no esta ese libro ¯\_(ツ)_/¯")
             print("cero")
             redirect("/")
-        return redirect('/')
+        search=busqueda
+
+        return render_template('index.html',search=search)
 
     else:
         return render_template("index.html")
@@ -160,10 +165,15 @@ def libro(isbn):
         user_id = session["user_id"]
         comentario =request.form.get("comentario")
         print("----------------------------.comentario")
-        print(comentario)
-        print(user_id)
-        #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, id_usuario, reseña, valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":  ,"valoracion": })
-        #print("registrado")
+        # print(comentario)
+        # print(user_id)
+        #traer el id_libro
+        id_libro=db.execute("SELECT * FROM library WHERE isbn=:isbn", {"isbn":isbn}).fetchall()
+        print(id_libro[0]["id_libro"])
+        id_libro=id_libro[0]["id_libro"]
+
+        #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, :id_usuario, :reseña, :valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":comentario,"valoracion":valoracion})
+        #print("reseñas")
         #db.commit() 
         return redirect(url_for("index"))
 
@@ -181,8 +191,9 @@ def libro(isbn):
 
 @app.route("/library")
 def library():
-    
+    #muestras los libros que estan en la base de datos
     libro_existente=db.execute("SELECT * FROM library LIMIT 10").fetchall()
+    print(libro_existente)
     libro_existente=libro_existente
     return render_template("library.html",libro_existente=libro_existente)
 

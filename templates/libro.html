@@ -20,18 +20,45 @@
         <div class="col-12">
             <p>{{info.description}}</p>
         </div>
-        
+
         {% if session.user_id %}
-        <div class="col-12 ">
-        <form action="/library/{{isbn}}" method="post">
-            <div>
-                <textarea name="comentario" id="comentario" cols="30" rows="10" placeholder="que opinas tu?"></textarea>
-           </div>
-           <button class="btn btn-primary" type="submit">Enviar</button>
-        </form>
-               
+        <div class="valoracion">
+            
+        </div>
+        <div class="comentario">
+            <div class="col-12 ">
+                <form action="/library/{{isbn}}" method="post">
+                    <div>
+                        <textarea name="comentario" id="comentario" cols="30" rows="10"
+                            placeholder="que opinas tu?"></textarea>
+                    </div>
+                    
+
+                    <div class="valoracion">
+                        <form>
+                            <p class="clasificacion">
+                              <input id="radio1" type="radio" name="estrellas" value="5"><!--
+                              --><label for="radio1">★</label><!--
+                              --><input id="radio2" type="radio" name="estrellas" value="4"><!--
+                              --><label for="radio2">★</label><!--
+                              --><input id="radio3" type="radio" name="estrellas" value="3"><!--
+                              --><label for="radio3">★</label><!--
+                              --><input id="radio4" type="radio" name="estrellas" value="2"><!--
+                              --><label for="radio4">★</label><!--
+                              --><input id="radio5" type="radio" name="estrellas" value="1"><!--
+                              --><label for="radio5">★</label>
+                            </p>
+                          </form>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Enviar</button>
+                </form>
+
+            </div>
         </div>
         
+
+
         {% endif %}
     </div>
 
