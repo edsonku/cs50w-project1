@@ -11,6 +11,7 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions
 from werkzeug.security import check_password_hash, generate_password_hash
 from helper import apigoogle, login_required
+from string import capwords
 #from googletrans import Traslator 
 #from datatime 
 
@@ -43,8 +44,10 @@ def index():
     if request.method == "POST":
 
         #ingreso y busqueda del libro por medio de isbn,author o titulo del libro
-        busqueda= request.form.get("busqueda")
+        busqueda= str(request.form.get("busqueda"))
         print("success--------------")
+        busqueda= capwords(busqueda,sep=None)# cade vez que hay uhna separacion habra una mayuscula
+        print(busqueda)
         busqueda=db.execute("SELECT * FROM library WHERE isbn =:isbn OR title=:title OR author=:author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
         
         #si no hay resultado debera enviar un mensaje
@@ -52,6 +55,7 @@ def index():
             flash("no esta ese libro ¯\_(ツ)_/¯")
             print("cero")
             redirect("/")
+    
         search=busqueda
 
         return render_template('index.html',search=search)
@@ -158,23 +162,30 @@ def logout():
 #         #db.commit() 
 #         return comentario
     
-
+# opinion y valoracion
 @app.route("/library/<string:isbn>", methods=["GET", "POST"])
 def libro(isbn):
     if request.method == "POST":
         user_id = session["user_id"]
         comentario =request.form.get("comentario")
         print("----------------------------.comentario")
-        # print(comentario)
+        print(comentario)
         # print(user_id)
         #traer el id_libro
         id_libro=db.execute("SELECT * FROM library WHERE isbn=:isbn", {"isbn":isbn}).fetchall()
         print(id_libro[0]["id_libro"])
         id_libro=id_libro[0]["id_libro"]
 
-        #reseñas=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion)\ VALUES (:id_libro, :id_usuario, :reseña, :valoracion)",{"id_libro":nombre, "id_usuario":user_id, "reseña":comentario,"valoracion":valoracion})
-        #print("reseñas")
-        #db.commit() 
+        valoracion = request.form.get("estrellas")
+        print(valoracion)
+
+        addcommet=db.execute("INSERT INTO reseñas (id_libro, id_usuario, comentario, valoracion) VALUES (:id_libro, :id_usuario, :reseña, :valoracion)",{"id_libro":id_libro, "id_usuario":user_id, "reseña":comentario,"valoracion":valoracion})
+        db.commit() 
+        solucion=db.execute("SELECT * FROM reseñas").fetchall()
+        print(solucion)
+        
+        
+        
         return redirect(url_for("index"))
 
     else:
@@ -184,10 +195,17 @@ def libro(isbn):
             flash("Libro inexistente")
             return render_template("error.html"),404
 
+        id_libro=db.execute("SELECT * FROM library WHERE isbn=:isbn", {"isbn":isbn}).fetchall()
+        print(id_libro[0]["id_libro"])
+        id_libro=id_libro[0]["id_libro"]
+
         #traigo la imagen de la biblioteca para enviarsela al html
         portada=info["img"]
+        print("---------commet")
+        commet=db.execute("SELECT nombre, comentario, valoracion FROM reseñas JOIN usuarios ON usuarios.id_usuario=reseñas.id_usuario WHERE id_libro=:id_libro",{"id_libro":id_libro}).fetchall()
+        print(commet)
 
-        return render_template("libro.html",info=info,portada=portada, isbn=isbn)
+        return render_template("libro.html",info=info,portada=portada, isbn=isbn, commet=commet)
 
 @app.route("/library")
 def library():
@@ -208,6 +226,10 @@ def api(isbn):
         "author":busqueda[0]["author"],
         "title":busqueda[0]["title"],
         "year":busqueda[0]["year"]
-
     }
     return resapi
+
+# @app.route("/comentarios")
+# def api(comentario):
+
+#     comentario=db.execute("SELECT nombre, comentario, valoracion FROM reseña JOIN usuarios ON usuarios.id_usuario=reseñas.id_usuario WHERE id_libro=:id_libro",{"id_libro"})

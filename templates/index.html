@@ -6,20 +6,23 @@
     <h1>Bienvenido </h1></div>
 <div class="busqueda">
     <form action="/" method="POST">
-    <form class="form-inline">
-        <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search"  name="busqueda" aria-label="Search">
-        <button id="botonbusqueda" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline">
+            <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search"  name="busqueda" aria-label="Search">
+            <button id="botonbusqueda" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </form>
-</form></div>
+</div>
 <div class="resultados">
     {%for x in search%}
-    <ul>
-        <li>isbn:{{x.isbn}}</li>
-        <li>title:{{x.title}}</li>
-        <li>author:{{x.author}}</li>
-        <li>year:{{x.year}}</li>
-    </ul>
-        
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">title:{{x.title}}</h5>
+          <h2>author:{{x.author}}</h2>
+          <p class="card-text">year:{{x.year}}.</p>
+          <a href="/library/{{x.isbn}}" class="btn btn-primary">Go to the book</a>
+        </div>
+      </div>
     {%endfor%}
     
 </div>
