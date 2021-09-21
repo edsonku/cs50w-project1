@@ -2,30 +2,44 @@
 
 {% block title %}index{% endblock %}
 {%block main%}
-<div class="bienvenida">
-    <h1>Bienvenido </h1></div>
-<div class="busqueda">
-    <form action="/" method="POST">
-        <form class="form-inline">
-            <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search"  name="busqueda" aria-label="Search">
-            <button id="botonbusqueda" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </form>
-</div>
-<div class="resultados">
-    {%for x in search%}
-    <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">title:{{x.title}}</h5>
-          <h2>author:{{x.author}}</h2>
-          <p class="card-text">year:{{x.year}}.</p>
-          <a href="/library/{{x.isbn}}" class="btn btn-primary">Go to the book</a>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="bienvenida">
+                <h1>Bienvenido </h1>
+            </div>
         </div>
-      </div>
-    {%endfor%}
-    
+        <div class="col-12">
+            <div class="busqueda">
+                <form action="/" method="POST">
+                    <form class="form-inline">
+                        <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search"
+                            name="busqueda" aria-label="Search">
+                        <button id="botonbusqueda" class="btn btn-outline-success my-2 my-sm-0"
+                            type="submit">Search</button>
+                    </form>
+                </form>
+            </div>
+        </div>
+
+        
+            {%for x in search%}
+            <div class="col-6">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h2 class="card-title">{{x.title}}</h2>
+                        <h5>author:{{x.author}}</h5>
+                        <p class="card-text">year:{{x.year}}.</p>
+                        <a href="/library/{{x.isbn}}" class="btn btn-primary">Go to the book</a>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        
+    </div>
 </div>
-    
-    
+
+
+
+
 {%endblock%}
