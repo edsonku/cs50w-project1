@@ -48,10 +48,11 @@
             </div>
         </div>
         {%for x in commet%}
-        <div class="commet col-12">
+        <div class="commets col-12">
             <li>{{x.nombre}}</li>
+            <p class="burbuja triangulo"><li>{{x.comentario}}</li></p>
             <li>{{x.valoracion}}</li>
-            <li>{{x.comentario}}</li>
+            
         </div>
         {% endfor %}
 

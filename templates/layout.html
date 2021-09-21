@@ -13,7 +13,7 @@
 </head>
 <body>
  
-    <nav class="navbar navbar-light bg-primary">
+    <nav class="navbar navbar-light bg-primary" style="min-width: 100vw;">
         <a class="navbar-brand">Navbar</a>
         {% if session.user_id %}
         <!-- <form class="form-inline">
@@ -60,7 +60,7 @@
           </ul>
         </nav>
         {% endif %}
-        {% block main %}
+
         <div id="content">
           {% if get_flashed_messages() %}
           <header>
@@ -69,10 +69,15 @@
               </div>
           </header>
           {% endif %}
-            <h1>texto</h1>
-        </div>
+
+          {% block main %}
+        
         {% endblock %}
+        <footer>project1-library-v1.0</footer>
+        </div>
+        
     </div>
-    <footer>project1-library-v1.0</footer>
+    
+    
 </body>
 </html>

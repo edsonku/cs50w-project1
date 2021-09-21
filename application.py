@@ -48,7 +48,8 @@ def index():
         print("success--------------")
         busqueda= capwords(busqueda,sep=None)# cade vez que hay uhna separacion habra una mayuscula
         print(busqueda)
-        busqueda=db.execute("SELECT * FROM library WHERE isbn =:isbn OR title=:title OR author=:author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
+        busqueda = '%'+busqueda+'%'
+        busqueda=db.execute("SELECT * FROM library WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
         
         #si no hay resultado debera enviar un mensaje
         if not busqueda:
@@ -230,6 +231,6 @@ def api(isbn):
     return resapi
 
 # @app.route("/comentarios")
-# def api(comentario):
+# def allcoment():
 
-#     comentario=db.execute("SELECT nombre, comentario, valoracion FROM reseña JOIN usuarios ON usuarios.id_usuario=reseñas.id_usuario WHERE id_libro=:id_libro",{"id_libro"})
+#     comentario=db.execute("SELECT nombre, comentario, valoracion FROM reseña JOIN usuarios ON usuarios.id_usuario=reseñas.id_usuario )

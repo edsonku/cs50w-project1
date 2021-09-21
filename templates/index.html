@@ -23,19 +23,22 @@
         </div>
 
         
-            {%for x in search%}
-            <div class="col-6">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h2 class="card-title">{{x.title}}</h2>
-                        <h5>author:{{x.author}}</h5>
-                        <p class="card-text">year:{{x.year}}.</p>
-                        <a href="/library/{{x.isbn}}" class="btn btn-primary">Go to the book</a>
-                    </div>
+            
+        
+    </div>
+    <div class="row justify-content-around">
+        {%for x in search%}
+        <div class="col-5">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">{{x.title}}</h2>
+                    <h5>author:{{x.author}}</h5>
+                    <p class="card-text">year:{{x.year}}.</p>
+                    <a href="/library/{{x.isbn}}" class="btn btn-primary">Go to the book</a>
                 </div>
             </div>
-            {%endfor%}
-        
+        </div>
+        {%endfor%}
     </div>
 </div>
 
