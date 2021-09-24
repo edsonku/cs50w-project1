@@ -30,6 +30,7 @@ def apigoogle(isbn):
         "author":volumeInfo["authors"][0],
         "img": img["thumbnail"],
         "fecha":volumeInfo["publishedDate"],
+        "isbn":volumeInfo["industryIdentifiers"]["identifier"]
         
     }
     #si no existe un dato de informacion la tomara por 0(cero)
@@ -43,6 +44,7 @@ def apigoogle(isbn):
         "author":volumeInfo["authors"][0],
         "img":0,
         "fecha":volumeInfo["publishedDate"],
+        "isbn":volumeInfo["industryIdentifiers"][0]["identifier"]
         
     }
     

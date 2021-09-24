@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}Comentarios{% endblock %}
+{%block main%}
+<div class="bienvenida">Here you are all you comments </div>
+{%for x in allcommets%}
+        <div class="col-12">
+            
+            <div class="comentarios">
+                <div class="comentario burbuja">
+                    <p> I said about {{x.title}}:</p>
+                    <p>{{x.comentario}}
+                        {{x.valoracion}} ★
+                    </p>
+                </div>    
+            </div>
+        </div>
+        {% endfor %}
+{% endblock %}

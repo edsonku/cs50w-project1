@@ -2,13 +2,14 @@
 
 {% block title %}Login{% endblock %}
 {%block main%}
+<section class="row justify-content-center bodylogin">
     <form action="/login" method="post">
-        <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Username" type="text"/>
+        <div class="sign-up">
+            <input type="text" class="sign-up-input" name="username" placeholder="What's your username?" required autofocus>
+            <input type="password" class="sign-up-input"  name="password" placeholder="Password" required>
+            <button class="sign-up-button" type="submit">Log In</button>
+            
         </div>
-        <div class="form-group">
-            <input class="form-control" name="password" placeholder="Password" type="password"/>
-        </div>
-        <button class="btn btn-primary" type="submit">Log In</button>
     </form>
+</section>
 {%endblock%}

@@ -6,7 +6,8 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <h1>{{info.title}}</h1>
-            <h2>by {{info.author}}</h2>
+            <h2>by : {{info.author}}</h2>
+            <h5>ISBN : {{info.isbn}}</h5>
         </div>
         <div class="col-12S">
             <img src="{{portada}}" alt="">
@@ -28,10 +29,11 @@
                 <form action="/library/{{isbn}}" method="post">
                     <div>
                         <textarea name="comentario" id="comentario" cols="30" rows="10"
-                            placeholder="que opinas tu?"></textarea>
+                            placeholder="What do you think about this book?"></textarea>
                     </div>
                            <p class="clasificacion">
-                              <input id="radio1" type="radio" name="estrellas" value="5"><label for="radio1">★</label>
+                              <input id="radio1" type="radio" name="estrellas" value="5">
+                              <label for="radio1">★</label>
                               <input id="radio2" type="radio" name="estrellas" value="4">
                               <label for="radio2">★</label>
                               <input id="radio3" type="radio" name="estrellas" value="3">
@@ -48,16 +50,22 @@
             </div>
         </div>
         {%for x in commet%}
-        <div class="commets col-12">
-            <li>{{x.nombre}}</li>
-            <p class="burbuja triangulo"><li>{{x.comentario}}</li></p>
-            <li>{{x.valoracion}}</li>
-            
+        <div class="col-12">
+
+            <div class="comentarios">
+                <div class="comentario burbuja">
+                    <p>{{x.nombre}} Says:</p>
+                    <p>{{x.comentario}}
+                        {{x.valoracion}} ★
+                    </p>
+                </div>    
+            </div>
         </div>
         {% endfor %}
+         
 
         {% endif %}
+        
     </div>
-
 </div>
 {%endblock%}

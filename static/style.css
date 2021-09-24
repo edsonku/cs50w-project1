@@ -1,15 +1,34 @@
 /* este es el bueno, el otro hay que eliminarlo XDxc */
 
+body{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  background-color: #f5e693bd;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
 /* navbar */
 .nav-item{
     justify-content: end;
     color: cornsilk;
 }
-#botonbusqueda{
-    background: rgb(252, 252, 252, 0.5);
-    color: blue;
-    border-color: #fff;
+
+.navbar_style{
+  background-color: #6a76f8;
+
 }
+.navbar_style ul li a{
+  padding: 10px 10px 10px 20px;
+  font-size: 1.1em;
+  display: block;
+  color: #fff;
+  font-weight: bold;
+}
+
 
 .navbar-nav {
     -ms-flex-direction: row;
@@ -18,13 +37,99 @@
 .navbar-nav >.nav-item{
     padding: 8px;
 }
+/* LOGIN y registro */
+.bodylogin{
+  background:url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bGlicmFyeXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80");
+  height: 100vh;
+}
+.sign-up {
+  position: relative;
+  margin: 50px auto;
+  width: 280px;
+  padding: 33px 25px 29px;
+  background: white;
+  border-bottom: 1px solid #c4c4c4;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
 
+.sign-up:after {
+  bottom: 3px;
+  border-color: #dcdcdc;
+}
+
+.sign-up-title {
+  margin: -25px -25px 25px;
+  padding: 15px 25px;
+  line-height: 35px;
+  font-size: 26px;
+  font-weight: 300;
+  color: #aaa;
+  text-align: center;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+  background: #f7f7f7;
+}
+
+input {
+  font-family: inherit;
+  color: inherit;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.sign-up-input {
+  width: 100%;
+  height: 50px;
+  margin-bottom: 25px;
+  padding: 0 15px 2px;
+  font-size: 17px;
+  background: white;
+  border: 2px solid #ebebeb;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 -2px #ebebeb;
+  box-shadow: inset 0 -2px #ebebeb;
+}
+.sign-up-input:focus {
+  border-color: #62c2e4;
+  outline: none;
+  -webkit-box-shadow: inset 0 -2px #62c2e4;
+  box-shadow: inset 0 -2px #62c2e4;
+}
+.lt-ie9 .sign-up-input {
+  line-height: 48px;
+}
+
+.sign-up-button {
+  position: relative;
+  vertical-align: top;
+  width: 100%;
+  height: 54px;
+  padding: 0;
+  font-size: 22px;
+  color: white;
+  text-align: center;
+  background: #f0776c;
+  border: 0;
+  border-bottom: 2px solid #d76b60;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #d76b60;
+  box-shadow: inset 0 -2px #d76b60;
+}
+.sign-up-button:active {
+  top: 1px;
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 /* pantalla */
 .wrapper {
     display: flex;
     width: 100%;
     align-items: stretch;
-    height: 500px;
+    height: 100vh;
   }
   /* sidebar */
 #sidebar {
@@ -89,6 +194,29 @@
     transition: all 0.3s;
     margin-top: 70px;
  }
+ 
+ .bienvenida{
+   text-align: center;
+   font-style: oblique;
+   font-size: large;
+ }
+ .busqueda{
+   text-align: center;
+   margin-bottom: 10px;
+   margin-top: 10px;
+ }
+ 
+ #botonbusqueda{
+  background: rgba(164, 189, 255, 0.5);
+  color: blue;
+  border-color: rgb(245, 218, 130);
+  
+}
+/* biblioteca */
+a{
+  color: #222;
+  text-decoration: none;
+}
  /* valoracion */
  #form {
     width: 250px;
@@ -125,9 +253,51 @@
   input[type="radio"]:checked ~ label {
     color: orange;
   }
+
+  /*burbuja de comentario*/
+  
+
+  .comentarios{
+    width: 400px;
+  }
+
+  .comentarios .comentario{
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .comentarios .comentario p{
+    margin: 0 0 10px 0;
+  }
+
+  .burbuja{
+    position: relative;
+    background-color: #fff;
+    padding: 20px;
+    color: #222;
+    border-radius: 3px;
+    margin-left: 20px;
+  }
+
+  .burbuja:after{
+    content: "";
+    display: block;
+    position: absolute;
+
+    top: 15px;
+    margin-left: -35px;
+
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+
+    border-right: 15px solid #fff;
+  }
   /* footer */
 footer{
-  margin-top: 20px;
+  margin-top: 0px;
   background-color: grey;
   text-align: center;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -140,4 +310,7 @@ footer{
 #content{
   width: 100%;
   overflow-y: auto;
+  height: 89%;
 }
+
+

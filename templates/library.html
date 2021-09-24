@@ -6,7 +6,7 @@
     <article class="row">
     {% for x in libro_existente%}
         
-        <div class="col-6">
+        <div class="col-6 biblioteca">
             <header>
                 <h1><a href="/library/{{x.isbn}}">{{x.title}}</a></h2>
                 <h2>{{x.author}}</h2>
@@ -14,8 +14,8 @@
             </header>
         </div>
             
-        
     {% endfor %}
+    
     </article>
 </div>
 

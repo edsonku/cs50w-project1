@@ -13,7 +13,7 @@
             <div class="busqueda">
                 <form action="/" method="POST">
                     <form class="form-inline">
-                        <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search"
+                        <input autocomplete="on" class="form-control mr-sm-2" type="search" placeholder="Search by ISBN, Author or Title"
                             name="busqueda" aria-label="Search">
                         <button id="botonbusqueda" class="btn btn-outline-success my-2 my-sm-0"
                             type="submit">Search</button>
@@ -32,8 +32,8 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h2 class="card-title">{{x.title}}</h2>
-                    <h5>author:{{x.author}}</h5>
-                    <p class="card-text">year:{{x.year}}.</p>
+                    <h5>Author: {{x.author}}</h5>
+                    <p class="card-text">Year: {{x.year}}.</p>
                     <a href="/library/{{x.isbn}}" class="btn btn-primary">Go to the book</a>
                 </div>
             </div>
@@ -41,8 +41,4 @@
         {%endfor%}
     </div>
 </div>
-
-
-
-
 {%endblock%}
