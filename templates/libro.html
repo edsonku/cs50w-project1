@@ -12,13 +12,14 @@
         <div class="col-12S">
             <img src="{{portada}}" alt="">
         </div>
-        <div class="col-12">
+        <div class="col-12 d-flex justify-content-center mt-2">
             <ul>
-                <li>averageRating:{{info.averageRating}}</li>
-                <li>ratingsCount:{{info.ratingsCount}}</li>
+                <li>Average Rating: {{info.averageRating}}★</li>
+                <li>Ratings Count: {{info.ratingsCount}}</li>
             </ul>
         </div>
         <div class="col-12">
+            <h3>Description:</h3>
             <p>{{info.description}}</p>
         </div>
 
@@ -29,7 +30,7 @@
                 <form action="/library/{{isbn}}" method="post">
                     <div>
                         <textarea name="comentario" id="comentario" cols="30" rows="10"
-                            placeholder="What do you think about this book?"></textarea>
+                            placeholder="What do you think about this book?" required></textarea>
                     </div>
                            <p class="clasificacion">
                               <input id="radio1" type="radio" name="estrellas" value="5">

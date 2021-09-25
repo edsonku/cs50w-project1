@@ -5,15 +5,12 @@
 <div class="container">
     <article class="row">
     {% for x in libro_existente%}
-        
-        <div class="col-6 biblioteca">
-            <header>
-                <h1><a href="/library/{{x.isbn}}">{{x.title}}</a></h2>
-                <h2>{{x.author}}</h2>
-                <img src="" alt="">
-            </header>
+    <div class="card w-50 biblioteca">
+        <div class="card-body">
+          <h5 class="card-title"><a href="/library/{{x.isbn}}">{{x.title}}</a></h5>
+          <p class="card-text">{{x.author}}</p>
         </div>
-            
+    </div>
     {% endfor %}
     
     </article>

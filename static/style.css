@@ -18,7 +18,7 @@ body{
 }
 
 .navbar_style{
-  background-color: #6a76f8;
+  background-color: #b57c00;
 
 }
 .navbar_style ul li a{
@@ -136,7 +136,7 @@ input {
       min-width: 20vw;
       max-width: 250px;
       height: 100vh;
-      background: #6a76f8;
+      background: #b57c00;
       color: #fff;
       transition: all 0.3s;
   }
@@ -144,7 +144,7 @@ input {
   #sidebar {
     min-width: 150px;
     max-width: 150px;
-    background: #6a76f8;
+    background: #b57c00;
     color: #fff;
     transition: all 0.3s;
 }
@@ -161,7 +161,7 @@ input {
   
 #sidebar .sidebar-header{
       padding: 20px;
-      background: #6a76f8;
+      background: #ecab0f;
 }
 #sidebar ul.components{
       padding: 20px 0px;
@@ -181,7 +181,7 @@ input {
       font-weight: bold;
   }
   #sidebar ul li a:hover {
-      color: #6240bd;
+      color: #4b27ff;
       background: #fff;
       text-decoration: none;
   }
@@ -207,9 +207,22 @@ input {
  }
  
  #botonbusqueda{
-  background: rgba(164, 189, 255, 0.5);
-  color: blue;
+  background: #ffff72;
+  color: #b57c00;
   border-color: rgb(245, 218, 130);
+  font-weight: bold;
+}
+
+.btn-edit{
+  color: #b57c00;
+  background-color: #ffff72;
+  border-color: #ffff72;
+  font-weight: bold;
+}
+li{
+  list-style-type :none;
+  font-size: medium;
+  font-weight: bold;
   
 }
 /* biblioteca */
@@ -247,11 +260,11 @@ a{
   
   label:hover,
   label:hover ~ label {
-    color: orange;
+    color: #ecab0f;
   }
   
   input[type="radio"]:checked ~ label {
-    color: orange;
+    color: #ecab0f;
   }
 
   /*burbuja de comentario*/
@@ -296,7 +309,7 @@ a{
     border-right: 15px solid #fff;
   }
   /* footer */
-footer{
+/* footer{
   margin-top: 0px;
   background-color: grey;
   text-align: center;
@@ -305,7 +318,7 @@ footer{
   padding-top: 5px;
   padding-bottom: 5px;
 
-}
+} */
 
 #content{
   width: 100%;

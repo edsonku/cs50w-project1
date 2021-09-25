@@ -46,19 +46,20 @@ def index():
         #ingreso y busqueda del libro por medio de isbn,author o titulo del libro
         busqueda= str(request.form.get("busqueda"))
         # print("success--------------")
-        busqueda= capwords(busqueda,sep=None)# cade vez que hay uhna separacion habra una mayuscula
+        busqueda= capwords(busqueda,sep=None)# cade vez que hay una separacion habra una mayuscula
         # print(busqueda)
         #concatena las palabras para que incluso si solo ingresa una letra encuentre similitudes
         busqueda = '%'+busqueda+'%'
-        busqueda=db.execute("SELECT * FROM library WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
-        
+
+        busquedas=db.execute("SELECT * FROM library WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
+        #conteo=db.execute("SELECT title FROM library WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author",{"isbn":busqueda, "title":busqueda, "author":busqueda}).fetchall()
         #si no hay resultado debera enviar un mensaje
-        if not busqueda:
+        
+        if not busquedas:
             flash("Sorry, we haven´t that book ¯\_(ツ)_/¯")
             redirect("/")
-    
-        search=busqueda
-        name()
+        search=busquedas
+       
         return render_template('index.html',search=search)
 
     else:
@@ -72,7 +73,7 @@ def registro():
     if request.method == "POST":
 
         nombre = request.form.get("username")
-        print(nombre)
+        #print(nombre)
         contraseña = generate_password_hash(request.form.get("password"))
         confirmacion = request.form.get("confirmation")
         if not request.form.get("username"):
@@ -89,20 +90,23 @@ def registro():
         
         usuario_existente = db.execute("SELECT * from usuarios where nombre =:username", {"username": nombre}).fetchall()
         #print(usuario_existente)
-        print(usuario_existente)
+        #print(usuario_existente)
         
         if not usuario_existente:
             usuario_nuevo = db.execute("INSERT INTO usuarios (nombre, contraseña) \
                                        VALUES (:username, :password)",{"username":nombre, "password":contraseña})
-            flash("registrado")
-            session["user_id"] = usuario_nuevo[0]["id_usuario"]
-            session["name"]=usuario_nuevo[0]["nombre"]
             db.commit() 
+
+            usuario_registrado=db.execute("SELECT * FROM usuarios WHERE nombre = :username",{"username":nombre}).fetchall()
+            print(usuario_registrado[0]["id_usuario"])
+            session["user_id"] = usuario_registrado[0]["id_usuario"]
+            session["name"]=usuario_registrado[0]["nombre"]
+            flash("Register completed")
             return redirect(url_for("index"))
         
         else:
             print("intenta otro nombre")
-            flash('Intenta otro nombre')
+            flash('Try other username')
             return render_template("registro.html")
     
     else:
@@ -167,6 +171,8 @@ def libro(isbn):
 
         valoracion = request.form.get("estrellas")
         print(valoracion)
+        if not valoracion:
+            valoracion=0
 
         consultacommet=db.execute("SELECT comentario, valoracion FROM reseñas  WHERE id_libro=:id_libro AND id_usuario=:id_usuario", {"id_libro":id_libro,"id_usuario":user_id}).fetchall()
         #print("------------------------------consulta")
@@ -199,7 +205,7 @@ def libro(isbn):
 
         #traigo la imagen de la biblioteca para enviarsela al html
         portada=info["img"]
-
+        print(portada)
         #seleccino los comentarios correspondiente al libro
         #print("---------commet")
         commet=db.execute("SELECT nombre, comentario, valoracion FROM reseñas JOIN usuarios ON usuarios.id_usuario=reseñas.id_usuario WHERE id_libro=:id_libro",{"id_libro":id_libro}).fetchall()

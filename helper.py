@@ -17,9 +17,11 @@ def apigoogle(isbn):
     # print("--------------------------------- helper")
     # print(volumeInfo)
     # print("---------------------------------helper")
-    
+    img =response["items"][0]["volumeInfo"]["imageLinks"]
+    print(img["thumbnail"])
     #funcionoo
-    try :
+    
+    try : 
         img =response["items"][0]["volumeInfo"]["imageLinks"]
         resp={
         "totalItems":1,
@@ -30,9 +32,9 @@ def apigoogle(isbn):
         "author":volumeInfo["authors"][0],
         "img": img["thumbnail"],
         "fecha":volumeInfo["publishedDate"],
-        "isbn":volumeInfo["industryIdentifiers"]["identifier"]
-        
+        "isbn":volumeInfo["industryIdentifiers"][0]["identifier"]  
     }
+       
     #si no existe un dato de informacion la tomara por 0(cero)
     except: 
         resp={
