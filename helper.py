@@ -17,37 +17,32 @@ def apigoogle(isbn):
     # print("--------------------------------- helper")
     # print(volumeInfo)
     # print("---------------------------------helper")
-    img =response["items"][0]["volumeInfo"]["imageLinks"]
-    print(img["thumbnail"])
-    #funcionoo
     
-    try : 
-        img =response["items"][0]["volumeInfo"]["imageLinks"]
-        resp={
+    #funcionoo
+
+    #por si no tiene imagen
+    try:
+        img =response["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"]
+    except:
+        img=0
+    #por sino tiene puntuacion
+    try:
+        averageRating=volumeInfo["averageRating"]
+        ratingsCount=volumeInfo["ratingsCount"]
+    except:
+        averageRating=0
+        ratingsCount=0
+
+    resp={
         "totalItems":1,
-        "averageRating":volumeInfo["averageRating"],
-        "ratingsCount": volumeInfo["ratingsCount"],
+        "averageRating":averageRating,
+        "ratingsCount": ratingsCount,
         "description":volumeInfo["description"],
         "title":volumeInfo["title"],
         "author":volumeInfo["authors"][0],
-        "img": img["thumbnail"],
+        "img": img,
         "fecha":volumeInfo["publishedDate"],
         "isbn":volumeInfo["industryIdentifiers"][0]["identifier"]  
-    }
-       
-    #si no existe un dato de informacion la tomara por 0(cero)
-    except: 
-        resp={
-        "totalItems":1,
-        "averageRating":0,
-        "ratingsCount": 0,
-        "description":volumeInfo["description"],
-        "title":volumeInfo["title"],
-        "author":volumeInfo["authors"][0],
-        "img":0,
-        "fecha":volumeInfo["publishedDate"],
-        "isbn":volumeInfo["industryIdentifiers"][0]["identifier"]
-        
     }
     
     return resp
